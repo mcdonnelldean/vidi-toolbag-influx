@@ -1,0 +1,23 @@
+{
+  "name": "vidi-toolbag-influx",
+  "version": "0.0.1",
+  "description": "Toolbag stats",
+  "main": "toolbag-influx.js",
+  "scripts": {
+    "rig": "node -r toolbag test/rig.js"
+  },
+  "author": "Dean McDonnell (http://mcdonnelldean.me)",
+  "license": "MIT",
+  "devDependencies": {
+    "seneca": "1.1.0",
+    "seneca-stats": "mcdonnelldean/seneca-stats",
+    "seneca-toolbag-stats": "mcdonnelldean/seneca-toolbag-stats",
+    "seneca-influx-stats-store": "mcdonnelldean/seneca-influx-stats-store",
+    "toolbag": "0.7.0"
+  },
+  "dependencies": {
+    "influx": "4.1.0",
+    "lodash": "4.2.1",
+    "moment": "2.11.2"
+  }
+}
