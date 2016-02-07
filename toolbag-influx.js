@@ -52,7 +52,7 @@ module.exports = function (opts) {
               pid:    latest.pid,
               latest: latest,
               series: {
-                time: _.map(proc, x => moment(x.time).format('hh:mm:ss')),
+                time: _.map(proc, x => moment(x.time).format('mm:ss')),
                 ram_total: _.map(proc, x => format_mem(x.ram_total)),
                 ram_used: _.map(proc, x => format_mem(x.ram_total)),
                 heap_total: _.map(proc, x => format_mem(x.heap_total)),
