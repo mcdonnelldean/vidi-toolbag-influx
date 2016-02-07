@@ -52,9 +52,12 @@ module.exports = function (opts) {
               pid:    latest.pid,
               latest: latest,
               series: {
-                time:      _.map(proc, 'time'),
-                ram_total: _.map(proc, 'ram_total'),
-                ram_used:  _.map(proc, 'ram_used')
+                time: _.map(proc, x => moment(x.time).format('hh:mm:ss')),
+                ram_total: _.map(proc, x => format_mem(x.ram_total)),
+                ram_used: _.map(proc, x => format_mem(x.ram_total)),
+                heap_total: _.map(proc, x => format_mem(x.heap_total)),
+                heap_used: _.map(proc, x => format_mem(x.heap_used)),
+                heap_rss: _.map(proc, x => format_mem(x.heap_rss))
               }
             })
           })
@@ -134,5 +137,5 @@ function format_mem (bytes) {
   if (bytes == 0) return '0 Byte';
   var i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
 
-  return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i];
+  return Math.round(bytes / Math.pow(1024, i), 2);
 }
