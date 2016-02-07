@@ -15,10 +15,6 @@ var s = require('seneca')()
 
 setTimeout(function () {
 
-  s.act({role: 'vidi', group: 'toolbag', stat: 'cpu'}, (err, msg) => {
-    console.log(JSON.stringify(msg, null, 2))
-  })
-
   s.act({role: 'vidi', group: 'toolbag', stat: 'event_loop'}, (err, msg) => {
     console.log(JSON.stringify(msg, null, 2))
   })

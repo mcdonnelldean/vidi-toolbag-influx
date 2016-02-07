@@ -33,7 +33,7 @@ module.exports = function (opts) {
       }
 
       var db = influx(opts.influx)
-      var qry = 'SELECT * FROM "process_snapshot" WHERE time > now() - 120s GROUP BY "pid"'
+      var qry = 'SELECT * FROM "process_snapshot" WHERE time > now() - 60s'
       db.query(qry, (err, data) => {
         if (err) {
           seneca.log.error(err)
@@ -52,7 +52,7 @@ module.exports = function (opts) {
               pid:    latest.pid,
               latest: latest,
               series: {
-                time: _.map(proc, x => moment(x.time).format('mm:ss')),
+                time: _.map(proc, x => moment(x.time).format('hh:mm:ss')),
                 ram_total: _.map(proc, x => format_mem(x.ram_total)),
                 ram_used: _.map(proc, x => format_mem(x.ram_total)),
                 heap_total: _.map(proc, x => format_mem(x.heap_total)),
@@ -76,21 +76,32 @@ module.exports = function (opts) {
       }
 
       var db = influx(opts.influx)
-      var qry = 'SELECT * FROM "cpu_snapshot" WHERE time > now() - 120s'
+      var qry = `SELECT * FROM "cpu_snapshot" WHERE time > now() - 120s`
       db.query(qry, (err, data) => {
         if (err) {
           seneca.log.error(err)
           opts.enabled = false
         }
         else {
-          data = data[0]
+          payload = payload || []
+          data = _.groupBy(data[0], 'pid')
 
-          var time_series = _.map(data, metric => metric.time)
 
-          payload = payload || {}
-          payload.group = 'toolbag'
-          payload.stat = 'cpu_snapshot'
-          payload.latest = _.last(data)
+          _.each(data, (proc) => {
+            var latest = _.last(proc)
+
+            payload.push({
+              stat:   'cpu_snapshot',
+              group:  'toolbag',
+              pid:    latest.pid,
+              latest: latest,
+              series: {
+                time: _.map(proc, x => moment(x.time).format('hh:mm:ss')),
+                user: _.map(proc, x => x.user),
+                nice: _.map(proc, x => x.nice)
+              }
+            })
+          })
         }
 
         done(null, payload)
@@ -113,14 +124,25 @@ module.exports = function (opts) {
           opts.enabled = false
         }
         else {
-          data = data[0]
+          payload = payload || []
+          data = _.groupBy(data[0], 'pid')
 
-          var time_series = _.map(data, metric => metric.time)
 
-          payload = payload || {}
-          payload.group = 'toolbag'
-          payload.stat = 'event_loop_snapshot'
-          payload.latest = _.last(data)
+          _.each(data, (proc) => {
+            var latest = _.last(proc)
+
+            payload.push({
+              stat:   'event_loop_snapshot',
+              group:  'toolbag',
+              pid:    latest.pid,
+              latest: latest,
+              series: {
+                time: _.map(proc, x => moment(x.time).format('hh:mm:ss')),
+                delay: _.map(proc, x => Math.round(x.delay)),
+                limit: _.map(proc, x => x.limit)
+              }
+            })
+          })
         }
 
         done(null, payload)
