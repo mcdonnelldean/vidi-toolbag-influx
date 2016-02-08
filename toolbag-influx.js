@@ -8,7 +8,7 @@ var defaults = {
   plugin: 'vidi-toolbag-influx',
   enabled: true,
   influx: {
-    host:'192.168.99.100',
+    host:'localhost',
     port:'8086',
     username:'stats',
     password:'stats',
