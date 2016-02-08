@@ -44,7 +44,15 @@ module.exports = function (opts) {
           data = _.groupBy(data[0], 'pid')
 
           _.each(data, (proc) => {
-            var latest = _.last(proc)
+            var latest = _.clone(_.last(proc))
+            latest.proc_uptime = moment().startOf('day').seconds(latest.proc_uptime).format('HH:mm:ss')
+            latest.sys_uptime = moment().startOf('day').seconds(latest.sys_uptime).format('HH:mm:ss')
+            latest.time = moment(latest.time).format('hh:mm:ss')
+            latest.ram_total = format_mem(latest.ram_total)
+            latest.ram_used = format_mem(latest.ram_total)
+            latest.heap_total = format_mem(latest.heap_total)
+            latest.heap_used = format_mem(latest.heap_used)
+            latest.heap_rss = format_mem(latest.heap_rss)
 
             payload.push({
               stat:   'process_snapshot',
@@ -160,4 +168,17 @@ function format_mem (bytes) {
   var i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
 
   return Math.round(bytes / Math.pow(1024, i), 2);
+}
+
+function msToHMS( ms ) {
+    // 1- Convert to seconds:
+    var seconds = Math.floor(ms);
+    // 2- Extract hours:
+    var hours = parseInt( seconds / 3600 ); // 3,600 seconds in 1 hour
+    seconds = seconds % 3600; // seconds remaining after extracting hours
+    // 3- Extract minutes:
+    var minutes = parseInt( seconds / 60 ); // 60 seconds in 1 minute
+    // 4- Keep only seconds not extracted to minutes:
+    seconds = seconds % 60;
+    return (hours+":"+minutes+":"+seconds);
 }
