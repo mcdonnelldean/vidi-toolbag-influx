@@ -28,8 +28,10 @@ module.exports = function (opts) {
 
   function process_stats (msg, done) {
     this.prior(msg, function (err, payload) {
+      payload = payload || []
+
       if (!opts.enabled) {
-        return done(null, data)
+        return done(null, payload)
       }
 
       var db = influx(opts.influx)
@@ -40,7 +42,6 @@ module.exports = function (opts) {
           opts.enabled = false
         }
         else {
-          payload = payload || []
           data = _.groupBy(data[0], 'pid')
 
           _.each(data, (proc) => {
@@ -71,7 +72,7 @@ module.exports = function (opts) {
           })
         }
 
-        done(null, payload)
+        done(err, payload)
       })
 
     })
@@ -79,8 +80,10 @@ module.exports = function (opts) {
 
   function cpu_stats (msg, done) {
     this.prior(msg, function (err, payload) {
+      payload = payload || []
+
       if (!opts.enabled) {
-        return done(null, data)
+        return done(null, payload)
       }
 
       var db = influx(opts.influx)
@@ -91,7 +94,6 @@ module.exports = function (opts) {
           opts.enabled = false
         }
         else {
-          payload = payload || []
           data = _.groupBy(data[0], 'pid')
 
 
@@ -112,7 +114,7 @@ module.exports = function (opts) {
           })
         }
 
-        done(null, payload)
+        done(err, payload)
       })
 
     })
@@ -120,8 +122,10 @@ module.exports = function (opts) {
 
   function event_loop_stats (msg, done) {
     this.prior(msg, function (err, payload) {
+      payload = payload || []
+
       if (!opts.enabled) {
-        return done(null, data)
+        return done(null, payload)
       }
 
       var db = influx(opts.influx)
@@ -132,9 +136,8 @@ module.exports = function (opts) {
           opts.enabled = false
         }
         else {
-          payload = payload || []
-          data = _.groupBy(data[0], 'pid')
 
+          data = _.groupBy(data[0], 'pid')
 
           _.each(data, (proc) => {
             var latest = _.last(proc)
