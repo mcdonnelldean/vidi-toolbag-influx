@@ -56,9 +56,10 @@ module.exports = function (opts) {
             latest.heap_rss = format_mem(latest.heap_rss)
 
             payload.push({
-              name:   'process_snapshot',
-              source:  'toolbag',
-              pid:    latest.pid,
+              name: 'process_snapshot',
+              source: latest.source,
+              pid: latest.pid,
+              tag: latest.tag,
               latest: latest,
               series: {
                 time: _.map(proc, x => moment(x.time).format('hh:mm:ss')),
@@ -102,8 +103,9 @@ module.exports = function (opts) {
 
             payload.push({
               name:   'cpu_snapshot',
-              source:  'toolbag',
-              pid:    latest.pid,
+              source: latest.source,
+              pid: latest.pid,
+              tag: latest.tag,
               latest: latest,
               series: {
                 time: _.map(proc, x => moment(x.time).format('hh:mm:ss')),
@@ -144,8 +146,9 @@ module.exports = function (opts) {
 
             payload.push({
               name:   'event_loop_snapshot',
-              source:  'toolbag',
-              pid:    latest.pid,
+              source: latest.source,
+              pid: latest.pid,
+              tag: latest.tag,
               latest: latest,
               series: {
                 time: _.map(proc, x => moment(x.time).format('hh:mm:ss')),
