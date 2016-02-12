@@ -5,14 +5,14 @@ var _ = require('lodash')
 var moment = require('moment')
 
 var defaults = {
-  plugin: 'vidi-toolbag-influx',
+  plugin: 'vidi-toolbag-influx-queries',
   enabled: true,
   influx: {
-    host:'localhost',
-    port:'8086',
-    username:'stats',
-    password:'stats',
-    database:'seneca_stats'
+    host: 'localhost',
+    port: '8086',
+    username: 'metrics',
+    password: 'metrics',
+    database: 'vidi_metrics'
   }
 }
 
@@ -22,9 +22,9 @@ module.exports = function (opts) {
 
   opts = extend(defaults, opts)
 
-  seneca.add({role: 'vidi', group: 'toolbag', stat: 'process'}, process_stats)
-  seneca.add({role: 'vidi', group: 'toolbag', stat: 'cpu'}, cpu_stats)
-  seneca.add({role: 'vidi', group: 'toolbag', stat: 'event_loop'}, event_loop_stats)
+  seneca.add({role: 'vidi', source: 'toolbag', metric: 'process'}, process_stats)
+  seneca.add({role: 'vidi', source: 'toolbag', metric: 'cpu'}, cpu_stats)
+  seneca.add({role: 'vidi', source: 'toolbag', metric: 'event_loop'}, event_loop_stats)
 
   function process_stats (msg, done) {
     this.prior(msg, function (err, payload) {
@@ -56,8 +56,8 @@ module.exports = function (opts) {
             latest.heap_rss = format_mem(latest.heap_rss)
 
             payload.push({
-              stat:   'process_snapshot',
-              group:  'toolbag',
+              name:   'process_snapshot',
+              source:  'toolbag',
               pid:    latest.pid,
               latest: latest,
               series: {
@@ -101,8 +101,8 @@ module.exports = function (opts) {
             var latest = _.last(proc)
 
             payload.push({
-              stat:   'cpu_snapshot',
-              group:  'toolbag',
+              name:   'cpu_snapshot',
+              source:  'toolbag',
               pid:    latest.pid,
               latest: latest,
               series: {
@@ -143,8 +143,8 @@ module.exports = function (opts) {
             var latest = _.last(proc)
 
             payload.push({
-              stat:   'event_loop_snapshot',
-              group:  'toolbag',
+              name:   'event_loop_snapshot',
+              source:  'toolbag',
               pid:    latest.pid,
               latest: latest,
               series: {

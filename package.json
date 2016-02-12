@@ -1,18 +1,18 @@
 {
-  "name": "vidi-toolbag-influx",
+  "name": "vidi-toolbag-influx-queries",
   "version": "0.0.1",
-  "description": "Toolbag stats",
-  "main": "toolbag-influx.js",
+  "description": "Query plugin for toolbag metrics in influx",
+  "main": "toolbag-influx-queries.js",
   "scripts": {
-    "rig": "node -r toolbag test/rig.js"
+    "demo": "node -r toolbag srv/demo.js"
   },
   "author": "Dean McDonnell (http://mcdonnelldean.me)",
   "license": "MIT",
   "devDependencies": {
     "seneca": "1.1.0",
-    "seneca-stats": "mcdonnelldean/seneca-stats",
-    "seneca-toolbag-stats": "mcdonnelldean/seneca-toolbag-stats",
-    "seneca-influx-stats-store": "mcdonnelldean/seneca-influx-stats-store",
+    "vidi-metrics": "0.1.0",
+    "vidi-toolbag-metrics": "0.1.0",
+    "vidi-influx-sink": "0.1.0",
     "toolbag": "0.7.0"
   },
   "dependencies": {
