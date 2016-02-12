@@ -1,6 +1,6 @@
 {
   "name": "vidi-toolbag-influx-queries",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Query plugin for toolbag metrics in influx",
   "main": "toolbag-influx-queries.js",
   "scripts": {
@@ -8,6 +8,10 @@
   },
   "author": "Dean McDonnell (http://mcdonnelldean.me)",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/vidi-insights/vidi-toolbag-influx-queries.git"
+  },
   "devDependencies": {
     "seneca": "1.1.0",
     "vidi-metrics": "0.1.0",
