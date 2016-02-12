@@ -1,6 +1,6 @@
 {
   "name": "vidi-toolbag-influx-queries",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Query plugin for toolbag metrics in influx",
   "main": "toolbag-influx-queries.js",
   "scripts": {
